@@ -1,7 +1,7 @@
 // import the Movie model
 const Product = require("../models/product");
 
-async function getProducts(category) {
+async function getProducts(category, page = 1, itemsPerPage = 3) {
   // create an empty container for filter
   let filter = {};
 
@@ -9,8 +9,11 @@ async function getProducts(category) {
     filter.category = category;
   }
 
-  // load the movies data from Mongodb
-  const products = await Product.find(filter).sort({ _id: -1 });
+  //apply filters
+  const products = await Product.find(filter)
+    .limit(itemsPerPage) // limit number of items
+    .skip((page - 1) * itemsPerPage)
+    .sort({ _id: -1 });
 
   // return the products
   return products;
