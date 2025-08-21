@@ -12,7 +12,8 @@ const {
 
 router.get("/", async (req, res) => {
   const category = req.query.category;
-  const products = await getProducts(category); // function from controller
+  const page = req.query.page;
+  const products = await getProducts(category, page); // function from controller
   res.status(200).send(products);
 });
 

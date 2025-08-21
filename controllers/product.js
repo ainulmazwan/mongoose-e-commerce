@@ -1,7 +1,7 @@
 // import the Movie model
 const Product = require("../models/product");
 
-async function getProducts(category, page = 1, itemsPerPage = 3) {
+async function getProducts(category, page = 1, itemsPerPage = 6) {
   // create an empty container for filter
   let filter = {};
 
