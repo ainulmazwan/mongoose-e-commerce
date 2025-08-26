@@ -35,6 +35,7 @@ app.get("/", (req, res) => {
 // import all the routers
 const productRouter = require("./routes/product");
 app.use("/products", productRouter);
+app.use("/orders", require("./routes/order"));
 
 // start the express server
 app.listen(5123, () => {
