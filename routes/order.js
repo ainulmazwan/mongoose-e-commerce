@@ -58,7 +58,7 @@ router.post("/", async (req, res) => {
 
     res.status(200).send(newOrder);
   } catch (error) {
-    console.log(error);
+    console.log(error.response.data);
     res.status(400).send({ message: "Unknown error" });
   }
 });
