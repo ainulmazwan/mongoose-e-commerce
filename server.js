@@ -40,6 +40,7 @@ const productRouter = require("./routes/product");
 app.use("/products", productRouter);
 app.use("/orders", require("./routes/order"));
 app.use("/payment", require("./routes/payment"));
+app.use("/image", require("./routes/image"));
 
 // start the express server
 app.listen(5123, () => {
