@@ -17,6 +17,9 @@ const productSchema = new Schema({
     type: String,
     required: true,
   },
+  image: {
+    type: String,
+  },
 });
 
 const Product = model("Product", productSchema);

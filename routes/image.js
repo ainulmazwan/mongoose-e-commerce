@@ -1,15 +1,16 @@
 const express = require("express");
 const router = express.Router();
 
-const multer = requrie("multer");
+const multer = require("multer");
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, "uploads/");
   },
+  // rename of the image file to make sure it's unique
   filename: function (req, file, cb) {
-    const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
-    cb(null, file.fieldname + "-" + uniqueSuffix);
+    cb(null, Date.now() + file.originalname.replace(/\s+/g, "_"));
+    // 1756344761294_fishbone.jpg
   },
 });
 
@@ -28,4 +29,4 @@ router.post("/", upload.single("image"), async (req, res) => {
   }
 });
 
-modules.exports = router;
+module.exports = router;
