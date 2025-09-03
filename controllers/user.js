@@ -1,15 +1,52 @@
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
 const User = require("../models/user");
 
-const login = async (email, password) => {};
+const login = async (email, password) => {
+  // 1. check if the email provided is in the system
+  const user = await User.findOne({ email: email });
+  // if not exists, throw and error
+  if (!user) {
+    throw new Error("Invalid email or password");
+  }
+
+  // if exists, compare the password
+  const passwordMatch = bcrypt.compareSync(password, user.password);
+  if (!passwordMatch) {
+    throw new Error("Invalid email or password");
+  }
+
+  // generate the JWT token
+  let token = jwt.sign(
+    {
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      role: user.role,
+    },
+    process.env.JWT_SECRET, // secret
+    { expiresIn: 60 * 60 }
+  );
+
+  // if password is correct, return the user data
+  return {
+    _id: user._id,
+    name: user.name,
+    email: user.email,
+    role: user.role,
+    token: token,
+  };
+};
 
 const signup = async (name, email, password) => {
   // 1 check if the email provided already exists
   const emailExists = await User.findOne({ email: email });
   // if email exists, throw error
   if (emailExists) {
-    throw new Error("Email already exists");
+    throw new Error(
+      "Email already exists. Please use another email or log in with existing email"
+    );
   }
 
   // 2 create the new user
@@ -20,8 +57,27 @@ const signup = async (name, email, password) => {
   });
   // 3 save the user
   await newUser.save();
-  // 4 return the user data
-  return newUser;
+
+  // 4 generate the JWT tokens
+  let token = jwt.sign(
+    {
+      _id: newUser._id,
+      name: newUser.name,
+      email: newUser.email,
+      role: newUser.role,
+    },
+    process.env.JWT_SECRET, // secret
+    { expiresIn: 60 * 60 }
+  );
+
+  // 5 return the user data
+  return {
+    _id: newUser._id,
+    name: newUser.name,
+    email: newUser.email,
+    role: newUser.role,
+    token: token,
+  };
 };
 
 module.exports = {
