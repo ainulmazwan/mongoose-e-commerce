@@ -11,6 +11,7 @@ async function getProducts(category, page = 1, itemsPerPage = 6) {
 
   //apply filters
   const products = await Product.find(filter)
+    .populate("category")
     .limit(itemsPerPage) // limit number of items
     .skip((page - 1) * itemsPerPage)
     .sort({ _id: -1 });
@@ -49,7 +50,7 @@ async function updateProduct(id, name, description, price, category, image) {
       description,
       price,
       category,
-      image
+      image,
     },
     {
       new: true, // return the updated data
