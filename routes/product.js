@@ -2,6 +2,8 @@ const express = require("express");
 // create an express router
 const router = express.Router();
 
+const { isAdmin } = require("../middleware/auth");
+
 const {
   getProducts,
   getProduct,
@@ -25,8 +27,9 @@ router.get("/:id", async (req, res) => {
   res.status(200).send(product);
 });
 
-router.post("/", async (req, res) => {
+router.post("/", isAdmin, async (req, res) => {
   try {
+    console.log(req.user);
     const name = req.body.name;
     const description = req.body.description;
     const price = req.body.price;
@@ -49,7 +52,7 @@ router.post("/", async (req, res) => {
   }
 });
 
-router.put("/:id", async (req, res) => {
+router.put("/:id", isAdmin, async (req, res) => {
   try {
     const id = req.params.id; // id of the product
     const name = req.body.name;
@@ -72,7 +75,7 @@ router.put("/:id", async (req, res) => {
   }
 });
 
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", isAdmin, async (req, res) => {
   try {
     const id = req.params.id;
 
