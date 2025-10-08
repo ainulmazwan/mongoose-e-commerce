@@ -20,7 +20,7 @@ app.use(cors());
 async function connectToMongoDB() {
   try {
     // wait for the MongoDB to connect
-    await mongoose.connect("mongodb://localhost:27017/ecommerce");
+    await mongoose.connect(process.env.MONGODB_URL + "/ecommerce");
     console.log("MongoDB is Connected");
   } catch (error) {
     console.log(error);
@@ -42,7 +42,7 @@ app.use("/orders", require("./routes/order"));
 app.use("/payment", require("./routes/payment"));
 app.use("/image", require("./routes/image"));
 app.use("/categories", require("./routes/category"));
-app.use("/users", require("./routes/user"))
+app.use("/users", require("./routes/user"));
 
 // set a folder as a static path
 app.use("/uploads", express.static("uploads"));

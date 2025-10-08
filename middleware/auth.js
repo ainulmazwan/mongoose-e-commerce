@@ -3,7 +3,7 @@ const jwt = require("jsonwebtoken");
 const { getUserByEmail } = require("../controllers/user");
 
 // to check if the user is a valid user (control whether anyone who calling the API is a valid logged in user)
-const isValidUser = async () => {
+const isValidUser = async (req, res, next) => {
   try {
     const { authorization = "" } = req.headers;
     // 1. extract the token from authorization header
